@@ -1,7 +1,5 @@
 # client-test
 
-## Getting Started with Playwright for Klimato App
-
 This repository contains automated tests for the [Klimato client repository](https://github.com/Klimato/client). These tests are written using Playwright, an end-to-end testing framework that supports both cross-browser and cross-platform testing.
 
 ### Installation
