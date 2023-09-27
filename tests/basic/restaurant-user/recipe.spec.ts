@@ -47,7 +47,7 @@ test.describe("Display information", () => {
     const { name, ingredients } = recipes["meatballs-mashed-potatoes"];
 
     for (const ingredient of ingredients) {
-      await addIngredient(page, `${name} - ${getCurrentTime()}`, ingredient);
+      await addIngredient(page, name, ingredient);
       await isIngredientHeadingVisible(page, ingredient);
     }
 
@@ -56,7 +56,12 @@ test.describe("Display information", () => {
 });
 
 test.describe("Recipes Overview", () => {
-  test("should search for a specific recipe", async ({ page }) => {});
+  test("should search for a specific recipe", async ({ page }) => {
+    await page.getByRole("link", { name: "restaurant" }).click();
+
+    await page.getByPlaceholder("Search").fill("diavol");
+    await expect(page.getByRole("cell", { name: "Pizza Diavola" })).toBeVisible();
+  });
 });
 
 test.describe("Create Recipe", () => {
@@ -67,7 +72,7 @@ test.describe("Create Recipe", () => {
     const { name, ingredients } = recipes["meatballs-mashed-potatoes"];
 
     for (const ingredient of ingredients) {
-      await addIngredient(page, `${name} - ${getCurrentTime()}`, ingredient);
+      await addIngredient(page, name, ingredient);
       await isIngredientHeadingVisible(page, ingredient);
     }
 
@@ -80,7 +85,7 @@ test.describe("Create Recipe", () => {
     const { name, ingredients } = recipes["mini-lobster-roll"];
 
     for (const ingredient of ingredients) {
-      await addIngredient(page, `${name} - ${getCurrentTime()}`, ingredient);
+      await addIngredient(page, name, ingredient);
       await isIngredientHeadingVisible(page, ingredient);
     }
 
@@ -111,7 +116,7 @@ async function addIngredient(page: Page, recipeName: string, ingredientData: Ing
 
   await expect(page.getByRole("button", { name: "Add ingredient" })).toBeDisabled();
 
-  await page.getByPlaceholder("Recipe name").fill(recipeName);
+  await page.getByPlaceholder("Recipe name").fill(`${recipeName} - ${getCurrentTime()}`);
   await page.getByPlaceholder(" ").nth(2).fill(searchName);
   await page.getByText(ingredientName, { exact: true }).click();
 
